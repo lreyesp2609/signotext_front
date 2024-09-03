@@ -4,13 +4,8 @@ import { Camera } from "@mediapipe/camera_utils";
 import { HAND_CONNECTIONS } from "@mediapipe/hands";
 import axios from "axios";
 import { Button, Card, Collapse, Form, Spinner } from "react-bootstrap";
-import {
-  BsPlusCircle,
-  BsFileText,
-  BsGear,
-  BsFilm,
-  BsEye,
-} from "react-icons/bs";
+import { BsPlusCircle, BsFileText, BsGear } from "react-icons/bs";
+import Sugerencias from "./Sugerencias";
 
 const DefaultLoader = () => (
   <div className="d-flex justify-content-center align-items-center h-24">
@@ -187,7 +182,7 @@ export default function SeniasTexto() {
     }
   };
 
-  const processImage = async (dataURL) => {
+  const processImages = async () => {
     if (!selectedModel) {
       alert("Por favor, seleccione un modelo.");
       return;
@@ -195,19 +190,21 @@ export default function SeniasTexto() {
 
     setLoading(true);
     try {
-      const splitString = dataURL.split("data:image/png;base64,");
-      const response = await axios.post("http://localhost:4000", {
-        jsonrpc: "2.0",
-        method: "PredecirImagen",
-        params: [splitString[1], selectedModel], // Include selected model
-        id: 1,
-      });
-      const result = response.data.result;
-      setPrediction(result);
-      setOracion((prev) => `${prev} ${result}`); // Update the accumulated sentence
-      speak(result);
+      for (const imageData of imgBase64) {
+        const splitString = imageData.img.split("data:image/png;base64,");
+        const response = await axios.post("http://localhost:4000", {
+          jsonrpc: "2.0",
+          method: "PredecirImagen",
+          params: [splitString[1], selectedModel], // Incluye el modelo seleccionado
+          id: 1,
+        });
+        const result = response.data.result;
+        setPrediction(result);
+        setOracion((prev) => `${prev} ${result}`); // Actualiza la oración acumulada
+        speak(result);
+      }
     } catch (error) {
-      console.error("Error processing image:", error);
+      console.error("Error processing images:", error);
       alert("Error");
     } finally {
       setLoading(false);
@@ -248,6 +245,16 @@ export default function SeniasTexto() {
   const eliminarDato = (id) => {
     const nuevosDatos = imgBase64.filter((dato) => dato.id !== id);
     setImgBase64(nuevosDatos);
+  };
+
+  const limpiarOracion = () => {
+    setOracion("");
+  };
+
+  const eliminarUltimaPalabra = () => {
+    const palabras = oracion.trim().split(" ");
+    palabras.pop(); // Elimina la última palabra
+    setOracion(palabras.join(" "));
   };
 
   return (
@@ -298,39 +305,59 @@ export default function SeniasTexto() {
           Capturar Imagen
         </Button>
         <Button
-          onClick={() => processImage(imgBase64[imgBase64.length - 1]?.img)}
+          onClick={processImages}
           variant="primary"
           className="mt-3 d-flex align-items-center"
         >
           <BsFileText className="me-2" />
-          Procesar Imagen
+          Procesar Imágenes
         </Button>
+
+        <div className="d-flex justify-content-between">
+          <Button onClick={limpiarOracion} variant="danger">
+            Limpiar Oración
+          </Button>
+          <Button onClick={eliminarUltimaPalabra} variant="warning">
+            Eliminar Última Palabra
+          </Button>
+        </div>
         <div className="mt-3">
           <h3>Oración acumulada:</h3>
           <p>{oracion}</p>
         </div>
-        <div className="mt-3">
-          {imgBase64.length > 0 && (
-            <div className="d-flex flex-wrap">
-              {imgBase64.map((imgData) => (
-                <div key={imgData.id} className="m-2">
-                  <img
-                    src={imgData.img}
-                    alt={`Captura ${imgData.id}`}
-                    className="img-thumbnail"
-                  />
-                  <Button
-                    onClick={() => eliminarDato(imgData.id)}
-                    variant="danger"
-                    className="mt-2"
-                  >
-                    Eliminar
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <Sugerencias oracion={oracion} setOracion={setOracion} />
+        <Collapse in={imgBase64.length > 0}>
+          <Card className="my-4">
+            <Card.Body>
+              <Card className="shadow-sm">
+                <Card.Body>
+                  {imgBase64.length ? (
+                    <div className="row g-3">
+                      {imgBase64.map(({ img, id }) => (
+                        <div key={id} className="col-6 col-md-3">
+                          <Card className="shadow-sm">
+                            <Card.Img variant="top" src={img} />
+                            <Card.Body className="text-center">
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                onClick={() => eliminarDato(id)}
+                              >
+                                Eliminar
+                              </Button>
+                            </Card.Body>
+                          </Card>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    "No hay imágenes"
+                  )}
+                </Card.Body>
+              </Card>
+            </Card.Body>
+          </Card>
+        </Collapse>
       </Card.Body>
     </Card>
   );
