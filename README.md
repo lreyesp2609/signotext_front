@@ -1,8 +1,11 @@
-# React + Vite
+# Guía de Instalación
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sigue estos pasos para poner en marcha el proyecto:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Instalar Dependencias**  
+   Primero, instala las dependencias del proyecto usando el siguiente comando:
+   npm install
+   
+3. **Iniciar la Aplicación**
+   Una vez que las dependencias estén instaladas, puedes iniciar la aplicación con el siguiente comando:
+   npm run dev
