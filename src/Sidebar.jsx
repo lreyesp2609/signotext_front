@@ -21,6 +21,12 @@ const Sidebar = () => {
           Señas a texto
         </Nav.Link>
         <Nav.Link
+          onClick={() => navigate("/menu/PalabrasTexto")}
+          className={`py-2 px-3 rounded mb-2 ${getLinkClass("/menu/PalabrasTexto")}`}
+        >
+          Señas a palabras
+        </Nav.Link>
+        <Nav.Link
           onClick={() => navigate("/menu/TextoSenias")}
           className={`py-2 px-3 rounded mb-2 ${getLinkClass("/menu/TextoSenias")}`}
         >
@@ -37,6 +43,18 @@ const Sidebar = () => {
           className={`py-2 px-3 rounded mb-2 ${getLinkClass("/menu/GenerarModelo")}`}
         >
           Generar Modelo
+        </Nav.Link>
+        <Nav.Link
+          onClick={() => navigate("/menu/CrearVideo")}
+          className={`py-2 px-3 rounded mb-2 ${getLinkClass("/menu/CrearVideo")}`}
+        >
+          Crear Palabra
+        </Nav.Link>
+        <Nav.Link
+          onClick={() => navigate("/menu/GenerarModeloPalabra")}
+          className={`py-2 px-3 rounded mb-2 ${getLinkClass("/menu/GenerarModeloPalabra")}`}
+        >
+          Generar Modelo Palabra
         </Nav.Link>
       </Nav>
     </div>

@@ -6,6 +6,9 @@ import SeniasTexto from "./Opciones/SeniasTexto";
 import TextoSenias from "./Opciones/TextoSenias";
 import CrearSenia from "./Opciones/CrearSenia";
 import GenerarModelo from "./Opciones/GenerarModelo";
+import CrearVideo from "./Opciones/CrearPalabra";
+import GenerarModeloPalabra from "./Opciones/GenerarModeloPalabra";
+import PalabrasTexto from "./Opciones/SeniasPalabras";
 import { Container, Row, Col } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -28,9 +31,12 @@ const App = () => {
                   <Routes>
                     <Route path="/" element={<Navigate to="/menu/SeniasTexto" />} />
                     <Route path="SeniasTexto" element={<SeniasTexto />} />
+                    <Route path="PalabrasTexto" element={<PalabrasTexto />} />
                     <Route path="TextoSenias" element={<TextoSenias />} />
                     <Route path="CrearSenia" element={<CrearSenia />} />
                     <Route path="GenerarModelo" element={<GenerarModelo />} />
+                    <Route path="CrearVideo" element={<CrearVideo />} />
+                    <Route path="GenerarModeloPalabra" element={<GenerarModeloPalabra />} />
                   </Routes>
                 </Col>
               </Row>
