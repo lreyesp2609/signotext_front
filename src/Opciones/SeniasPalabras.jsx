@@ -372,6 +372,15 @@ export default function SeniasTexto() {
           Procesar Videos
         </Button>
 
+        <div className="d-flex justify-content-between">
+          <Button onClick={limpiarOracion} variant="danger">
+            Limpiar Oración
+          </Button>
+          <Button onClick={eliminarUltimaPalabra} variant="warning">
+            Eliminar Última Palabra
+          </Button>
+        </div>
+        
         <div className="mt-3">
           <h3>Oración acumulada:</h3>
           <p>{oracion}</p>
